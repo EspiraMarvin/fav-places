@@ -56,7 +56,7 @@ export default function ImagePicker() {
   }
 
   return (
-    <View style={styles.pickerContainer}>
+    <View>
       <View style={styles.imagePreview}>{imagePreview}</View>
       <OutlinedButton icon="camera" onPress={takeImageHandler}>
         Take Image
@@ -66,9 +66,6 @@ export default function ImagePicker() {
 }
 
 const styles = StyleSheet.create({
-  pickerContainer: {
-    paddingHorizontal: 20,
-  },
   imagePreview: {
     width: "100%",
     height: 200,
@@ -81,5 +78,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 4,
   },
 })
