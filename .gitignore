@@ -16,3 +16,4 @@ web-build/
 .expo
 .vscode
 .idea
+.env
