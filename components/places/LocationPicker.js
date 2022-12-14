@@ -1,5 +1,6 @@
 import { View, StyleSheet, Image, Text } from "react-native"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native"
 
 import {
   getCurrentPositionAsync,
@@ -9,13 +10,49 @@ import {
 
 import OutlinedButton from "../ui/OutlinedButton"
 import { Colors } from "../../constants/colors"
-import { getMapPreview } from "../../utils/location"
+import { getAddress, getMapPreview } from "../../utils/location"
 
-export default function LocationPicker() {
+export default function LocationPicker({ onPickLocation }) {
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions()
 
+  const isFocused = useIsFocused() // check if its the current stack screen
+  const navigation = useNavigation()
+  const route = useRoute()
+
   const [pickedLocation, setPickedLocation] = useState()
+
+  useEffect(() => {
+    if (isFocused && route.params) {
+      // check if route params have picked location data from map screen and set locations lat & lng
+      const mapPickedLocation = {
+        lat: route.params.pickedLat,
+        lng: route.params.pickedLng,
+      }
+      setPickedLocation(mapPickedLocation)
+    }
+  }, [route, isFocused])
+
+  useEffect(() => {
+    /*(async function () {
+      if (pickedLocation) {
+      // forward picked location to placeForm component
+        onPickLocation(pickedLocation)
+        // format picked location to human readable address /geocode
+        getAddress(pickedLocation.lat, pickedLocation.lng)
+      }
+    })()*/
+    async function handleLocation() {
+      if (pickedLocation) {
+        // format picked location to human readable address /geocode
+        const address = await getAddress(pickedLocation.lat, pickedLocation.lng)
+        // forward picked location & address to placeForm component
+        onPickLocation({ ...pickedLocation, address: address })
+      }
+    }
+
+    handleLocation()
+  }, [pickedLocation, onPickLocation])
 
   async function verifyPermisions() {
     if (
@@ -44,14 +81,17 @@ export default function LocationPicker() {
     }
 
     const location = await getCurrentPositionAsync()
-    console.log("locationRes", location)
+    // console.log("locationRes", location)
     setPickedLocation({
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     })
   }
 
-  function pickOnMapHandler() {}
+  function pickOnMapHandler() {
+    // opens map screen
+    navigation.navigate("Map")
+  }
 
   let locationPreview = <Text>No location picked yet</Text>
   if (pickedLocation) {

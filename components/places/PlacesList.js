@@ -17,11 +17,16 @@ export default function PlacesList({ places }) {
       data={places}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => <PlacesItem place={item} />}
+      style={styles.list}
     />
   )
 }
 
 const styles = StyleSheet.create({
+  list: {
+    marginHorizontal: 24,
+    marginVertical: 4,
+  },
   fallbackContainer: {
     flex: 1,
     justifyContent: "center",
