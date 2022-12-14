@@ -34,14 +34,6 @@ export default function LocationPicker({ onPickLocation }) {
   }, [route, isFocused])
 
   useEffect(() => {
-    /*(async function () {
-      if (pickedLocation) {
-      // forward picked location to placeForm component
-        onPickLocation(pickedLocation)
-        // format picked location to human readable address /geocode
-        getAddress(pickedLocation.lat, pickedLocation.lng)
-      }
-    })()*/
     async function handleLocation() {
       if (pickedLocation) {
         // format picked location to human readable address /geocode
@@ -95,9 +87,6 @@ export default function LocationPicker({ onPickLocation }) {
 
   let locationPreview = <Text>No location picked yet</Text>
   if (pickedLocation) {
-    const res = getMapPreview(pickedLocation.lat, pickedLocation.lng)
-    console.log("res", res)
-
     locationPreview = (
       <Image
         source={{
