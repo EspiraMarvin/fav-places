@@ -8,7 +8,7 @@ import { useState } from "react"
 import { Colors } from "../../constants/colors"
 import OutlinedButton from "../ui/OutlinedButton"
 
-export default function ImagePicker() {
+export default function ImagePicker({ onTakenImage }) {
   const [cameraPermissionInformation, requestPermission] =
     useCameraPermissions()
   const [pickedImage, setPickedImage] = useState()
@@ -46,6 +46,8 @@ export default function ImagePicker() {
 
     if (!imageResult.canceled) {
       setPickedImage(imageResult.assets[0].uri)
+      onTakenImage(imageResult.assets[0].uri)
+      console.log("image uri shoud be this", imageResult.assets[0].uri)
     }
   }
 
