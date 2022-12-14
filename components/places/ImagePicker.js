@@ -40,7 +40,7 @@ export default function ImagePicker({ onTakenImage }) {
     const imageResult = await launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
-      quality: 0.5,
+      quality: 0.9,
     })
     // console.log("image", imageResult)
 
